@@ -177,6 +177,7 @@ const cfg = {
 
     trustedClusters: '/web/trust',
     audit: '/web/cluster/:clusterId/audit',
+    databaseAudit: '/web/cluster/:clusterId/database-audit',
     unifiedResources: '/web/cluster/:clusterId/resources',
     nodes: '/web/cluster/:clusterId/nodes',
     sessions: '/web/cluster/:clusterId/sessions',
@@ -689,6 +690,10 @@ const cfg = {
 
   getAuditRoute(clusterId: string) {
     return generatePath(cfg.routes.audit, { clusterId });
+  },
+
+  getDatabaseAuditRoute(clusterId: string) {
+    return generatePath(cfg.routes.databaseAudit, { clusterId });
   },
 
   /**

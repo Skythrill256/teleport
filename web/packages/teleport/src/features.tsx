@@ -51,6 +51,7 @@ import { ListSessionRecordingsRoute } from 'teleport/SessionRecordings/list/List
 import { LockedAccessRequests } from './AccessRequests';
 import { AccountPage } from './Account';
 import { AuditContainer as Audit } from './Audit';
+import { DatabaseAuditContainer as DatabaseAudit } from './DatabaseAudit';
 import { AuthConnectorsContainer as AuthConnectors } from './AuthConnectors';
 import { BotInstances } from './BotInstances/BotInstances';
 import { BotInstanceDetails } from './BotInstances/Details/BotInstanceDetails';
@@ -665,6 +666,29 @@ export class FeatureAudit implements TeleportFeature {
   };
 }
 
+export class FeatureDatabaseAudit implements TeleportFeature {
+  category = NavigationCategory.Audit;
+
+  route = {
+    title: 'Database Query Audit',
+    path: cfg.routes.databaseAudit,
+    component: DatabaseAudit,
+  };
+
+  hasAccess(flags: FeatureFlags) {
+    return flags.audit;
+  }
+
+  navigationItem = {
+    title: 'Database Queries',
+    icon: ListThin,
+    getLink(clusterId: string) {
+      return cfg.getDatabaseAuditRoute(clusterId);
+    },
+    searchableTags: ['database queries', 'sql', 'audit'],
+  };
+}
+
 // - Clusters
 
 export class FeatureClusters implements TeleportFeature {
@@ -886,6 +910,7 @@ export function getOSSFeatures(): TeleportFeature[] {
 
     // - Audit
     new FeatureAudit(),
+    new FeatureDatabaseAudit(),
     new FeatureRecordings(),
     new FeatureSessions(),
 

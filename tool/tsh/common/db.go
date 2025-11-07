@@ -985,19 +985,54 @@ func (d *databaseInfo) checkAndSetDefaults(cf *CLIConf, tc *client.TeleportClien
 		}
 
 		if needDBUser {
-			dbUser, err := getDefaultDBUser(db, checker)
-			if err != nil {
-				return trace.Wrap(err)
+			var dbUser string
+			if cf.DisableDBPrompts {
+				// If prompts are disabled, use the first available user or return error
+				dbUsers, err := checker.EnumerateDatabaseUsers(db)
+				if err != nil {
+					return trace.Wrap(err)
+				}
+				allowed := dbUsers.Allowed()
+				if len(allowed) > 0 {
+					dbUser = allowed[0]
+					logger.DebugContext(cf.Context, "Using first available database user (prompts disabled)", "database_user", dbUser)
+				} else if dbUsers.WildcardAllowed() {
+					dbUser = types.Wildcard
+					logger.DebugContext(cf.Context, "Using wildcard database user (prompts disabled)", "database_user", dbUser)
+				} else {
+					return trace.AccessDenied("no database users available for %v and prompts are disabled", db.GetName())
+				}
+			} else {
+				dbUser, err = getDefaultDBUser(db, checker)
+				if err != nil {
+					return trace.Wrap(err)
+				}
+				logger.DebugContext(cf.Context, "Defaulting to the allowed database user", "database_user", dbUser)
 			}
-			logger.DebugContext(cf.Context, "Defaulting to the allowed database user", "database_user", dbUser)
 			d.Username = dbUser
 		}
 		if needDBName {
-			dbName, err := getDefaultDBName(db, checker)
-			if err != nil {
-				return trace.Wrap(err)
+			var dbName string
+			if cf.DisableDBPrompts {
+				// If prompts are disabled, use the first available database name or return error
+				dbNames := checker.EnumerateDatabaseNames(db)
+				allowed := dbNames.Allowed()
+				if len(allowed) > 0 {
+					dbName = allowed[0]
+					logger.DebugContext(cf.Context, "Using first available database name (prompts disabled)", "database_name", dbName)
+				} else if dbNames.WildcardAllowed() {
+					dbName = types.Wildcard
+					logger.DebugContext(cf.Context, "Using wildcard database name (prompts disabled)", "database_name", dbName)
+				} else {
+					return trace.AccessDenied("no database names available for %v and prompts are disabled", db.GetName())
+				}
+			} else {
+				dbName, err = getDefaultDBName(db, checker)
+				if err != nil {
+					return trace.Wrap(err)
+				}
+				logger.DebugContext(cf.Context, "Defaulting to the allowed database name", "database_name", dbName)
 			}
-			logger.DebugContext(cf.Context, "Defaulting to the allowed database name", "database_name", dbName)
 			d.Database = dbName
 		}
 	}

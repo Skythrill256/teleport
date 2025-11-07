@@ -266,6 +266,8 @@ type CLIConf struct {
 	DatabaseRoles string
 	// DatabaseCommand specifies the command to execute.
 	DatabaseCommand string
+	// DisableDBPrompts disables prompting for database username and name when not configured.
+	DisableDBPrompts bool
 
 	// AppName specifies proxied application name.
 	AppName string
@@ -1155,6 +1157,7 @@ func Run(ctx context.Context, args []string, opts ...CliOption) error {
 	dbConnect.Flag("query", queryHelp).StringVar(&cf.PredicateExpression)
 	dbConnect.Flag("request-reason", "Reason for requesting access").StringVar(&cf.RequestReason)
 	dbConnect.Flag("disable-access-request", "Disable automatic resource access requests").BoolVar(&cf.disableAccessRequest)
+	dbConnect.Flag("disable-db-prompts", "Disable prompting for database username and name when not configured").BoolVar(&cf.DisableDBPrompts)
 	dbConnect.Flag("tunnel", "Open authenticated tunnel using database's client certificate so clients don't need to authenticate").Hidden().BoolVar(&cf.LocalProxyTunnel)
 	dbExec := db.Command("exec", "Execute database commands on target database services.")
 	dbExec.Flag("db-user", "Database user to log in as.").Short('u').StringVar(&cf.DatabaseUser)
@@ -1166,6 +1169,7 @@ func Run(ctx context.Context, args []string, opts ...CliOption) error {
 	dbExec.Flag("output-dir", "Directory to store command output per target database service. A summary is saved as \"summary.json\".").StringVar(&cf.OutputDir)
 	dbExec.Flag("dbs", "List of comma separated target database services. Mutually exclusive with --search or --labels.").StringVar(&cf.DatabaseServices)
 	dbExec.Flag("confirm", "Confirm selected database services before executing command.").Default("true").BoolVar(&cf.Confirm)
+	dbExec.Flag("disable-db-prompts", "Disable prompting for database username and name when not configured").BoolVar(&cf.DisableDBPrompts)
 	dbExec.Arg("command", "Execute this command on target database services.").Required().StringVar(&cf.DatabaseCommand)
 	dbExec.Alias(dbExecHelp)
 
