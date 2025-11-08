@@ -18,8 +18,7 @@
 
 import React, { useState } from 'react';
 
-import { Button, Text, Flex, ButtonBorder, ButtonPrimary } from 'design';
-import { P } from 'design/typography';
+import { Button, Text, Flex, ButtonBorder, ButtonPrimary, P2 } from 'design';
 import { ArrowForward, Clock, Database, User } from 'design/Icon';
 import { formatRelative, formatISO } from 'date-fns';
 
@@ -41,9 +40,9 @@ export function DatabaseQueryEventList(props: Props) {
   if (events.length === 0) {
     return (
       <Flex alignItems="center" justifyContent="center" height="200px">
-        <P typography="body1" color="text.muted">
+        <P2 typography="body1" color="text.muted">
           No database query events found in the selected time range.
-        </P>
+        </P2>
       </Flex>
     );
   }
@@ -331,3 +330,5 @@ function EventDetailsModal({ event, onClose }: ModalProps) {
     </Flex>
   );
 }
+
+export default DatabaseQueryEventList;

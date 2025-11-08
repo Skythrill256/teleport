@@ -1,0 +1,39 @@
+teleport:
+  data_dir: ./data
+  auth_token: setup123
+  auth_servers:
+    - localhost:3025
+  log:
+    severity: INFO
+    output: stderr
+  
+proxy_service:
+  enabled: "yes"
+  listen_addr: 0.0.0.0:3081
+  public_addr: localhost:3081
+
+auth_service:
+  enabled: "yes"
+  listen_addr: 0.0.0.0:3025
+  tokens:
+    - "proxy,node:setup123"
+    - "auth:setup123"
+  authentication:
+    type: local
+
+ssh_service:
+  enabled: "no"
+
+db_service:
+  enabled: "yes"
+  databases:
+    - name: "test-postgres"
+      protocol: "postgres"
+      uri: "127.0.0.1:5432"
+      static_labels:
+        env: "development"
+      admin_user:
+        name: "postgres"
+        default_database: "postgres"
+      tls:
+        mode: "insecure"

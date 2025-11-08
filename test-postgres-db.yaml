@@ -1,0 +1,11 @@
+kind: db
+version: v3
+metadata:
+  name: test-postgres
+  labels:
+    env: development
+spec:
+  protocol: postgres
+  uri: 127.0.0.1:5432
+  static_labels:
+    env: development

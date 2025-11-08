@@ -192,8 +192,10 @@ func (a *Server) generateDatabaseCert(ctx context.Context, req *proto.DatabaseCe
 			// Override ExtKeyUsage to ExtKeyUsageServerAuth.
 			certReq.ExtraExtensions = append(certReq.ExtraExtensions, extKeyUsageServerAuthExtension)
 		case types.DatabaseClientCA:
-			// Override ExtKeyUsage to ExtKeyUsageClientAuth.
-			certReq.ExtraExtensions = append(certReq.ExtraExtensions, extKeyUsageClientAuthExtension)
+			// Override ExtKeyUsage to include both ClientAuth and ServerAuth.
+			// This allows database clients to authenticate with self-hosted databases
+			// like PostgreSQL that require TLS Web Client Authentication purpose.
+			certReq.ExtraExtensions = append(certReq.ExtraExtensions, extKeyUsageClientServerAuthExtension)
 		}
 	}
 	cert, err := tlsCA.GenerateCertificate(certReq)
@@ -455,6 +457,18 @@ var (
 		Id: oidExtKeyUsage,
 		Value: func() []byte {
 			val, err := asn1.Marshal([]asn1.ObjectIdentifier{oidExtKeyUsageClientAuth})
+			if err != nil {
+				panic(err)
+			}
+			return val
+		}(),
+	}
+	// extKeyUsageClientServerAuthExtension includes both client and server authentication
+	// This is needed for database clients to authenticate with self-hosted PostgreSQL
+	extKeyUsageClientServerAuthExtension = pkix.Extension{
+		Id: oidExtKeyUsage,
+		Value: func() []byte {
+			val, err := asn1.Marshal([]asn1.ObjectIdentifier{oidExtKeyUsageClientAuth, oidExtKeyUsageServerAuth})
 			if err != nil {
 				panic(err)
 			}

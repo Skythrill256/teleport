@@ -168,7 +168,7 @@ func TestDBCertSigning(t *testing.T) {
 			name:           "DB service request is signed by active db client CA and trusts db CAs",
 			wantCertSigner: activeDBClientCACert,
 			wantCACerts:    [][]byte{activeDBCACert, newDBCACert},
-			wantKeyUsage:   []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth},
+			wantKeyUsage:   []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
 		},
 		{
 			name:           "tctl request is signed by new db CA and trusts db client CAs",

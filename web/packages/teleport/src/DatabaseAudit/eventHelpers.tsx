@@ -18,7 +18,7 @@
 
 import React from 'react';
 
-import { Database, Terminal, AlertTriangle, CheckCircle, XCircle } from 'design/Icon';
+import { Database, Terminal, Warning, CircleCheck, CircleCross } from 'design/Icon';
 import { EventCode } from 'teleport/services/audit/types';
 import { Event } from 'teleport/services/audit';
 
@@ -39,7 +39,7 @@ export function getDatabaseEventIcon(eventCode: EventCode): React.ReactNode {
 
     case 'DATABASE_SESSION_STARTED':
     case 'DATABASE_SESSION_ENDED':
-      return <CheckCircle size="small" />;
+      return <CircleCheck size="small" />;
 
     case 'DATABASE_SESSION_STARTED_FAILURE':
     case 'DATABASE_SESSION_QUERY_FAILURE':
@@ -47,12 +47,12 @@ export function getDatabaseEventIcon(eventCode: EventCode): React.ReactNode {
     case 'OPENSEARCH_REQUEST_FAILURE':
     case 'DYNAMODB_REQUEST_FAILURE':
     case 'SPANNER_RPC_DENIED':
-      return <XCircle size="small" />;
+      return <CircleCross size="small" />;
 
     case 'DATABASE_SESSION_MALFORMED_PACKET':
     case 'DATABASE_SESSION_USER_CREATE_FAILURE':
     case 'DATABASE_SESSION_USER_DEACTIVATE_FAILURE':
-      return <AlertTriangle size="small" />;
+      return <Warning size="small" />;
 
     default:
       return <Database size="small" />;
