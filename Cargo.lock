@@ -1469,7 +1469,7 @@ dependencies = [
  "ironrdp-svc",
  "picky",
  "picky-asn1-der",
- "picky-asn1-x509",
+ "picky-asn1-x509 0.14.6",
  "rand_core 0.6.4",
  "sspi",
  "tracing",
@@ -2081,7 +2081,7 @@ dependencies = [
  "pbkdf2",
  "picky-asn1",
  "picky-asn1-der",
- "picky-asn1-x509",
+ "picky-asn1-x509 0.14.6",
  "rand 0.8.5",
  "rand_core 0.6.4",
  "rc2",
@@ -2122,9 +2122,9 @@ dependencies = [
 
 [[package]]
 name = "picky-asn1-x509"
-version = "0.14.3"
+version = "0.14.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "511c46b93e7f08571a375882879d3a468dfe8793d73249907b2e3332950cb33e"
+checksum = "d493f73cf052073ca1fe38666f74c2396987aa6ea660e77dd624cc6c8f60389e"
 dependencies = [
  "base64",
  "num-bigint-dig",
@@ -2134,6 +2134,19 @@ dependencies = [
  "serde",
  "widestring",
  "zeroize",
+]
+
+[[package]]
+name = "picky-asn1-x509"
+version = "0.15.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c97cd14d567a17755910fa8718277baf39d08682a980b1b1a4b4da7d0bc61a04"
+dependencies = [
+ "base64",
+ "oid",
+ "picky-asn1",
+ "picky-asn1-der",
+ "serde",
 ]
 
 [[package]]
@@ -2153,7 +2166,7 @@ dependencies = [
  "pbkdf2",
  "picky-asn1",
  "picky-asn1-der",
- "picky-asn1-x509",
+ "picky-asn1-x509 0.14.6",
  "rand 0.8.5",
  "serde",
  "sha1",
@@ -2373,7 +2386,7 @@ dependencies = [
  "log",
  "picky",
  "picky-asn1-der",
- "picky-asn1-x509",
+ "picky-asn1-x509 0.15.2",
  "rand 0.9.0",
  "reqwest",
  "rsa",
@@ -2883,7 +2896,7 @@ dependencies = [
  "picky",
  "picky-asn1",
  "picky-asn1-der",
- "picky-asn1-x509",
+ "picky-asn1-x509 0.14.6",
  "picky-krb",
  "portpicker",
  "rand 0.8.5",
